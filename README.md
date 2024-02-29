@@ -8,8 +8,6 @@ Official code for the paper: *Going Smaller: Attention-based Models For Automate
 - [Installation](#installation)
 - [Usage](#usage)
   - [Inference](#inference)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Introduction
 
@@ -32,21 +30,8 @@ Explain how to use your project, including any necessary steps before running in
 
 ### Inference
 
-Below is a code snippet to demonstrate how to run inference using our project:
+Below is a code snippet to demonstrate how to run inference using our project with SGE-B3 model:
 
 ```python
-# Import necessary libraries
-import your_library
-
-# Load the model
-model = your_library.load_model('path_to_your_model')
-
-# Load the data
-data = your_library.load_data('path_to_your_data')
-
-# Perform inference
-results = model.predict(data)
-
-# Print results
-print(results)
+python predict.py --kernel-type 8c_b3_384_384_35ep  --data-folder 512 --image-size 384 --enet-type SGE-B3 --fold 0,1,2,3,4 --model-dir /weights/
 
