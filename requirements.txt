@@ -1,4 +1,6 @@
 pytorch
+torchinfo
+wandb
 albumentations==0.4.6
 geffnet==0.9.8
 resnest==0.0.6b20200823
