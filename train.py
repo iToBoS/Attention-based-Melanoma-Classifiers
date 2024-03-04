@@ -22,9 +22,9 @@ from torchinfo import summary
 from val_utils import read_classification
 
 
-os.environ['WANDB_API_KEY'] = '706ff0f749dd4eb7c95e920de4c29f5a0de06d94'
-wandb_logger = wandb.init(entity="sana-nz", project="classifier-2",
-                          dir="/home/falcon/sana/scratch/Classifier", resume=False)
+os.environ['WANDB_API_KEY'] = ''
+wandb_logger = wandb.init(entity="", project="",
+                          dir="", resume=False)
 
 
 def parse_args():
