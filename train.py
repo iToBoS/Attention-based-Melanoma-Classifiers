@@ -21,26 +21,32 @@ import wandb
 from torchinfo import summary
 from val_utils import read_classification
 
+
+os.environ['WANDB_API_KEY'] = '706ff0f749dd4eb7c95e920de4c29f5a0de06d94'
+wandb_logger = wandb.init(entity="sana-nz", project="classifier-2",
+                          dir="/home/falcon/sana/scratch/Classifier", resume=False)
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--kernel-type', type=str, required=True) 
-    parser.add_argument('--load_model_dir', type=str, action='store_true')
-    parser.add_argument('--load-kernel-type', type=str, action='store_true') 
+    parser.add_argument('--kernel-type', type=str,required=True) 
+    parser.add_argument('--load_model_dir', type=str, default='./home/falcon/sana/SIIM-ISIC/test_weights/swin_fake_mlp2')
+    parser.add_argument('--load-kernel-type', type=str, default='8c_swinv2_224_224_18ep') #required=True
     parser.add_argument('--data-dir', type=str, default='./data/')
     parser.add_argument('--data-folder', type=int, default=512)
     parser.add_argument('--image-size', type=int, default=384)
-    parser.add_argument('--enet-type', type=str,  default='tf_efficientnet_b3')
+    parser.add_argument('--enet-type', type=str,  default='tf_efficientnet_b3') 
     parser.add_argument('--batch-size', type=int, default=64)
     parser.add_argument('--num-workers', type=int, default=2)
-    parser.add_argument('--init-lr', type=float, default=3e-5) 
+    parser.add_argument('--init-lr', type=float, default=3e-5) #
     parser.add_argument('--out-dim', type=int, default=9)
-    parser.add_argument('--n-epochs', type=int,default=35) 
+    parser.add_argument('--n-epochs', type=int,default=35) #  default=18
     parser.add_argument('--use-amp', action='store_true')
     parser.add_argument('--use-meta', action='store_true')
     parser.add_argument('--DEBUG', action='store_true')
-    parser.add_argument('--model-dir', type=str, default='./weights/')
+    parser.add_argument('--model-dir', type=str, default='./home/falcon/sana/SIIM-ISIC/test_weights/')
     parser.add_argument('--log-dir', type=str, default='./logs')
-    parser.add_argument('--CUDA_VISIBLE_DEVICES', type=str)
+    parser.add_argument('--CUDA_VISIBLE_DEVICES', type=str, default='MIG-cdc1351f-1b7a-554c-a273-f7643f99523f')
     parser.add_argument('--fold', type=str, default='0,1,2,3,4') 
     parser.add_argument('--n-meta-dim', type=str, default='512,128')
     parser.add_argument('--weight_decay', type=float, default=0.00001)
@@ -210,48 +216,16 @@ def run(fold, df, meta_features, n_meta_features, transforms_train, transforms_v
         print(f"len df valid for 2020: {df_valid['is_ext'].value_counts()[0]}")
         print(f"len df valid for 2019: {df_valid['is_ext'].value_counts()[1]}")
 
-    if args.enet_type == 'ViTBase':
-        model = ModelClass(out_dim=args.out_dim )
-
-    elif args.enet_type == 'ViT':
-        model = ModelClass(args.kernel_type,args.out_dim,pretrained=args.pretrained)
-       
-    elif 'densenet' in args.enet_type:
-        model = ModelClass(args.kernel_type,args.out_dim,pretrained=args.pretrained)
-
-    elif 'EfficientFormer' in args.enet_type:
-        model = ModelClass(args.out_dim,pretrained=args.pretrained)
-
-    elif args.enet_type == 'swin': 
-            model = ModelClass(img_size=args.image_size, n_class=args.out_dim,mlp_ratio=2.,depths=[2, 2, 6, 2]
-                               ,num_heads=[3, 6, 12, 24],pretrained=args.pretrained, window_size=7,qkv_bias=True,
-                               drop_rate=0.2, attn_drop_rate=0., drop_path_rate=0.1,embed_dim=96)     
-   
-    elif 'modified' in args.enet_type:
-        model = ModelClass(args.enet_type.replace('modified', ''),
-                           out_dim = args.out_dim,
-                           pretrained=args.pretrained)
-    
-    elif 'Attn' in args.enet_type or 'SA' in args.enet_type:
+    if args.enet_type != 'tf_efficientnet_b3':
         model = ModelClass( out_dim = args.out_dim,
-                           pretrained=args.pretrained)
-    elif args.finetune:
-            model = ModelClass(
-            args.enet_type,
-            n_meta_features=n_meta_features,
-            n_meta_dim=[int(nd) for nd in args.n_meta_dim.split(',')],
-            out_dim=int(args.load_kernel_type[0]),
-            pretrained=False,
-            freeze_top=args.freeze_top )
-
+                        pretrained=args.pretrained)
     else:
         model = ModelClass(
             args.enet_type,
             n_meta_features=n_meta_features,
             n_meta_dim=[int(nd) for nd in args.n_meta_dim.split(',')],
             out_dim=args.out_dim,
-            pretrained=args.pretrained,
-            freeze_top=args.freeze_top )
+            pretrained=args.pretrained)
 
     if DP:
         model = apex.parallel.convert_syncbn_model(model)
