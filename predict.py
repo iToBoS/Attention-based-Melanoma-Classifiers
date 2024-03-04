@@ -11,6 +11,9 @@ import wandb
 from torchinfo import summary
 from test_utils import read_clinical,read_prove
 
+os.environ['WANDB_API_KEY'] = ''
+wandb_logger = wandb.init(entity="", project="",
+                          dir="", resume=False)
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--kernel-type', type=str, required=True)
