@@ -7,7 +7,7 @@ Official code for the paper: *Going Smaller: Attention-based Models For Automate
 - [Introduction](#introduction)
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Inference](#inference)
+
 
 ## Introduction
 
@@ -25,13 +25,40 @@ achieving comparable results to the first winner while using up to 95% fewer par
 Install all dependencies from requirements.txt. Download the train and test datasets and place them in the data folder along with their corresponding .csv metadata files.
 
 ## Usage
+To run inference, use the ```predict.py``` script.
+``` python
+usage: predict_custom.py [-h] --kernel-type KERNEL_TYPE [--data-dir DATA_DIR] --image-size IMAGE_SIZE --enet-type ENET_TYPE
+                         [--batch-size BATCH_SIZE] [--num-workers NUM_WORKERS] [--out-dim OUT_DIM] [--use-amp] [--use-meta] [--DEBUG]
+                         [--model-dir MODEL_DIR] [--log-dir LOG_DIR] [--sub-dir SUB_DIR] [--eval {best,final,epoch10,epoch20,epoch30}]
+                         [--n-test N_TEST] [--CUDA_VISIBLE_DEVICES CUDA_VISIBLE_DEVICES] [--n-meta-dim N_META_DIM] [--hard_samples]
+                         [--fold FOLD]
 
-Explain how to use your project, including any necessary steps before running inference.
+optional arguments:
+  -h, --help            show this help message and exit
+  --kernel-type KERNEL_TYPE
+  --data-dir DATA_DIR
+  --image-size IMAGE_SIZE
+  --enet-type ENET_TYPE
+  --batch-size BATCH_SIZE
+  --num-workers NUM_WORKERS
+  --out-dim OUT_DIM
+  --use-amp
+  --use-meta
+  --DEBUG
+  --model-dir MODEL_DIR
+  --log-dir LOG_DIR
+  --sub-dir SUB_DIR
+  --eval {best,final,epoch10,epoch20,epoch30}
+  --n-test N_TEST
+  --CUDA_VISIBLE_DEVICES CUDA_VISIBLE_DEVICES
+  --n-meta-dim N_META_DIM
+  --hard_samples
+  --fold FOLD
+```
 
-### Inference
 
-Below is a code snippet to demonstrate how to run inference using our project with SGE-B3 model:
+Below is an example code snippet to demonstrate how to run inference using our project with SGE-B3 model:
 
 ```python
-python predict.py --kernel-type 8c_b3_384_384_35ep  --data-folder 512 --image-size 384 --enet-type SGE-B3 --fold 0,1,2,3,4 --model-dir /weights/
+python predict.py --kernel-type 9c_SGE-b3_384_384_35ep  --data-folder 512 --image-size 384 --enet-type SGE-B3 --fold 0,1,2,3,4 --model-dir /weights/
 
