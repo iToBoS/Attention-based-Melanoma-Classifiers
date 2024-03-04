@@ -25,7 +25,7 @@ achieving comparable results to the first winner while using up to 95% fewer par
 Install all dependencies from requirements.txt. Download the train and test datasets and place them in the data folder along with their corresponding .csv metadata files.
 
 ## Usage
-To run inference, use the ```predict.py``` script.
+To run inference, use the ```predict.py``` script. If you do not wish to connect your script to Wandb, remove the wandb.log commands. Otherwise, insert your Wandb credentials before running.
 ``` python
 usage: predict_custom.py [-h] --kernel-type KERNEL_TYPE [--data-dir DATA_DIR] --image-size IMAGE_SIZE --enet-type ENET_TYPE
                          [--batch-size BATCH_SIZE] [--num-workers NUM_WORKERS] [--out-dim OUT_DIM] [--use-amp] [--use-meta] [--DEBUG]
