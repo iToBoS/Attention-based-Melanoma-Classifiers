@@ -63,7 +63,7 @@ Below is an example code snippet to demonstrate how to run inference using our p
 
 ```python
 python predict.py --kernel-type 9c_SGE-b3_384_384_35ep  --data-folder 512 --image-size 384 --enet-type SGE-B3 --fold 0,1,2,3,4 --model-dir /weights/
-
+```
 ## Citation
 Please cite this content as:
 
@@ -78,5 +78,5 @@ issn = {0010-4825},
 doi = {https://doi.org/10.1016/j.compbiomed.2024.109492},
 url = {https://www.sciencedirect.com/science/article/pii/S0010482524015774},
 author = {Sana Nazari and Rafael Garcia},
-
+```
 
